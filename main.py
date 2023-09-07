@@ -5,7 +5,15 @@ import os
 
 if __name__ == "__main__":
 
-    email_filter = EmailFilter()
+    # access evironmental variables
+    load_dotenv()
+
+    email_address = os.getenv('INBOX_ADDRESS')
+    password = os.getenv('INBOX_PASSWORD')
+    imap_server = os.getenv('INBOX_IMAP_SERVER')
+    keywords = os.getenv('KEYWORDS')
+
+    email_filter = EmailFilter(email_address, password, imap_server, keywords)
     
     try:
         email_filter.connect()
