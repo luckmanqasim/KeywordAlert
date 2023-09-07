@@ -7,15 +7,13 @@ import html
 
 class EmailFilter:
 
-    def __init__(self):
+    def __init__(self, email_address, password, imap_server, keywords, destination_folder='starred'):
 
-        # access evironmental variables
-        load_dotenv()
-
-        self.email_address = os.getenv('INBOX_ADDRESS')
-        self.password = os.getenv('INBOX_PASSWORD')
-        self.imap_server = os.getenv('INBOX_IMAP_SERVER')
-        self.keywords = os.getenv('KEYWORDS')
+        self.email_address = email_address
+        self.password = password
+        self.imap_server = imap_server
+        self.keywords = keywords
+        self.destination_folder = destination_folder
         self.mail = None
 
     
@@ -66,6 +64,7 @@ class EmailFilter:
     
 
     # fetch emails using the email_ids
+    '''
     def fetch_emails(self, email_ids):
         
         for email_id in email_ids:
@@ -73,3 +72,21 @@ class EmailFilter:
             print("----------------")
             email_message = email_data[0][1].decode('utf-8')
             print(email_message)
+    '''
+
+
+    # create a new label/folder if it doesnt exist, default is "starred"
+    def create_destination_folder(self):
+
+        # get the list of all the labels
+        response, mailbox_list = self.mail.list()
+
+        # check for the destinaion folder in the list of all folders
+        folder_exists = any(self.destination_folder in mailbox for mailbox in mailbox_list)
+
+        # if it does not exist create a new one
+        if not folder_exists:
+            self.mail.create(self.destination_folder)
+
+
+    # move the selected emails to a different folder
