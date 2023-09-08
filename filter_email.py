@@ -7,7 +7,7 @@ import html
 
 class EmailFilter:
 
-    def __init__(self, email_address, password, imap_server, keywords, destination_folder='starred'):
+    def __init__(self, email_address, password, imap_server, keywords, destination_folder):
 
         self.email_address = email_address
         self.password = password
@@ -32,6 +32,7 @@ class EmailFilter:
     # disconnect the IMAP server
     def disconnect(self):
         if self.mail:
+            self.mail.close()
             self.mail.logout()
 
 
@@ -51,7 +52,7 @@ class EmailFilter:
         # go through all the search keywords
         for keyword in self.keywords:
 
-            search_criteria = f'(BODY "{keyword}")'
+            search_criteria = f'(UNSEEN BODY "{keyword}")'
             status, email_ids = self.mail.search(None, search_criteria)
 
             # save the email ids in the matching_email_ids list
@@ -82,7 +83,7 @@ class EmailFilter:
         response, mailbox_list = self.mail.list()
 
         # check for the destinaion folder in the list of all folders
-        folder_exists = any(self.destination_folder in mailbox for mailbox in mailbox_list)
+        folder_exists = any(self.destination_folder in mailbox.decode('utf-8') for mailbox in mailbox_list)
 
         # if it does not exist create a new one
         if not folder_exists:
@@ -90,3 +91,12 @@ class EmailFilter:
 
 
     # move the selected emails to a different folder
+    def move_emails(self, email_ids):
+
+        for email_id in email_ids:
+
+            try:
+                self.mail.copy(email_id, self.destination_folder.encode('utf-8'))
+                self.mail.store(email_id, '+FLAGS', '(\Seen)')
+            except Exception as e:
+                print(f'An error occured {e}')
