@@ -1,4 +1,5 @@
 import email
+from email.header import decode_header
 import imaplib
 from dotenv import load_dotenv
 import os
@@ -53,10 +54,12 @@ class EmailFilter:
         for keyword in self.keywords:
 
             search_criteria = f'(UNSEEN BODY "{keyword}")'
+            print(search_criteria)
             status, email_ids = self.mail.search(None, search_criteria)
 
-            # save the email ids in the matching_email_ids list
-            matching_email_ids.extend(email_ids[0].split())
+            if status == 'OK':
+                # save the email ids in the matching_email_ids list
+                matching_email_ids.extend(email_ids[0].split())
 
         # removes the duplicates from the list
         matching_email_ids = list(set(matching_email_ids))
@@ -65,18 +68,37 @@ class EmailFilter:
     
 
     # fetch emails using the email_ids
-    '''
     def fetch_emails(self, email_ids):
+
+        new_emails = []
         
         for email_id in email_ids:
-            status, email_data = self.mail.fetch(email_id, '(BODY[TEXT])')
-            print("----------------")
-            email_message = email_data[0][1].decode('utf-8')
-            print(email_message)
-    '''
+
+            try:
+                # fetch the email by ID
+                status, email_data = self.mail.fetch(email_id, '(RFC822)')
+                print('----------------')
+
+                # parse the email content
+                msg = email.message_from_bytes(email_data[0][1])
+
+                # decode the subject
+                subject, encoding = decode_header(msg['Subject'])[0]
+                if isinstance(subject, bytes):
+                    subject = subject.decode(encoding or 'utf-8')
+
+                new_email = {'Subject': subject, 'From': msg['From']}
+                new_emails.append(new_email)
+
+                # print the subject and the sender
+                print('Subject:', subject)
+                print('From:', msg['From'])
+
+            except Exception as e:
+                print(f'An error occurred {e}')
 
 
-    # create a new label/folder if it doesnt exist, default is "starred"
+    # create a new label/folder if it doesnt exist, default is 'starred'
     def create_destination_folder(self):
 
         # get the list of all the labels
