@@ -54,7 +54,7 @@ class EmailFilter:
         for keyword in self.keywords:
 
             search_criteria = f'(UNSEEN BODY "{keyword}")'
-            print(search_criteria)
+
             status, email_ids = self.mail.search(None, search_criteria)
 
             if status == 'OK':
@@ -77,7 +77,6 @@ class EmailFilter:
             try:
                 # fetch the email by ID
                 status, email_data = self.mail.fetch(email_id, '(RFC822)')
-                print('----------------')
 
                 # parse the email content
                 msg = email.message_from_bytes(email_data[0][1])
@@ -90,12 +89,10 @@ class EmailFilter:
                 new_email = {'Subject': subject, 'From': msg['From']}
                 new_emails.append(new_email)
 
-                # print the subject and the sender
-                print('Subject:', subject)
-                print('From:', msg['From'])
-
             except Exception as e:
                 print(f'An error occurred {e}')
+
+        return new_emails
 
 
     # create a new label/folder if it doesnt exist, default is 'starred'
