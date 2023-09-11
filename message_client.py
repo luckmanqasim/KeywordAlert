@@ -89,9 +89,9 @@ class Message:
         """
 
         if len(new_data) == 0:
-            subject = 'Sorry you have no new emails related your query.'
+            subject = 'Sorry you have no new emails related your query.\n'
         else:
-            subject = f'You have {str(len(new_data))} new emails related to your query!'
+            subject = f'You have {str(len(new_data))} new emails related to your query!\n'
 
         return subject
     
