@@ -86,6 +86,7 @@ class EmailFilter:
                 if isinstance(subject, bytes):
                     subject = subject.decode(encoding or 'utf-8')
 
+                # append the subject and sender of the emails to new_emails list
                 new_email = {'Subject': subject, 'From': msg['From']}
                 new_emails.append(new_email)
 
@@ -115,7 +116,10 @@ class EmailFilter:
         for email_id in email_ids:
 
             try:
+                # copy the emails to the new folder
                 self.mail.copy(email_id, self.destination_folder.encode('utf-8'))
+                
+                # mark the emails as seen
                 self.mail.store(email_id, '+FLAGS', '(\Seen)')
             except Exception as e:
                 print(f'An error occured {e}')
