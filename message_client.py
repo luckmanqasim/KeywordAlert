@@ -22,7 +22,7 @@ class Message:
         self.sender_password = sender_password
 
 
-    # send and email with the name, price and url of the new ads
+    # send and email with the name, price and url of the new emails
     def send_email(self, receiver_email, new_data):
         """
         Send an email.
@@ -76,13 +76,13 @@ class Message:
             return False
 
 
-    # create a subject for the email depending if there are any new ads or not
+    # create a subject for the email depending if there are any new emails or not
     def _create_email_subject(self, new_data):
         """
-        Create the email subject based on the number of new ads.
+        Create the email subject based on the number of new emails.
 
         Args:
-            new_data (list): List of new ads.
+            new_data (list): List of new emails.
 
         Returns:
             str: Email subject.
@@ -96,19 +96,19 @@ class Message:
         return subject
     
 
-    # Creates a body containing the info for new ads by parsing the list of new data in human readable form
+    # Creates a body containing the info for new emails by parsing the list of new data in human readable form
     def _create_email_body(self, new_data):
         """
-        Create the email body with information about new ads.
+        Create the email body with information about new emails.
 
         Args:
-            new_data (list): List of new ads.
+            new_data (list): List of new emails.
 
         Returns:
             str: Email body.
         """
 
-        # formats the list of new ads into human readable form
+        # formats the list of new emails into human readable form
         if len(new_data) == 0:
             body = 'Sadly there are no new emails regarding your query since last time.'
         else:
