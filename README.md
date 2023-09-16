@@ -22,7 +22,7 @@ Before you begin, ensure you have met the following requirements:
 
 - A Twilio account for or an email server for sending SMS alerts.
 
-- Environment variables set up with your email and Twilio credentials (see [Configuration](#configuration)).
+- Environment variables set up with your email and Twilio credentials.
 
 
 ## Setup
@@ -66,7 +66,7 @@ pip install -r requirements.txt
 ```
 
 
-##Usage
+## Usage
 
 To use this project:
 
