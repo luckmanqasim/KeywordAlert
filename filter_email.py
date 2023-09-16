@@ -69,6 +69,20 @@ class EmailFilter:
 
     # fetch emails using the email_ids
     def fetch_emails(self, email_ids):
+        """
+        Fetch and process (get the subject and sender) email messages based on a list of email IDs.
+
+        Args:
+            email_ids (list): A list of email IDs to fetch and process.
+
+        Returns:
+            list: A list of dictionaries, where each dictionary contains the subject and sender information
+                of the fetched emails.
+
+        Raises:
+            Exception: If an error occurs during the fetching and processing of emails, an exception is raised,
+                    and the error message is printed.
+        """
 
         new_emails = []
         
@@ -97,7 +111,7 @@ class EmailFilter:
 
 
     # create a new label/folder if it doesnt exist, default is 'starred'
-    def create_destination_folder(self):
+    def _create_destination_folder(self):
 
         # get the list of all the labels
         response, mailbox_list = self.mail.list()
@@ -112,6 +126,22 @@ class EmailFilter:
 
     # move the selected emails to a different folder
     def move_emails(self, email_ids):
+        """
+        Move specified emails to a destination folder and mark them as seen.
+
+        Args:
+            email_ids (list): A list of email IDs to move.
+
+        Raises:
+        Exception: If the destination folder is not provided or is empty, an exception is raised with
+                   an error message.
+        """
+
+        if not self.destination_folder:
+            raise Exception('Please enter a destination folder name to move your emails to')
+        
+        # create a destiation folder is it doesnt already exist
+        self._create_destination_folder()
 
         for email_id in email_ids:
 
@@ -121,5 +151,6 @@ class EmailFilter:
                 
                 # mark the emails as seen
                 self.mail.store(email_id, '+FLAGS', '(\Seen)')
+
             except Exception as e:
                 print(f'An error occured {e}')
