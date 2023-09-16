@@ -121,7 +121,12 @@ class EmailFilter:
 
         # if it does not exist create a new one
         if not folder_exists:
-            self.mail.create(self.destination_folder)
+
+            try:
+                self.mail.create(self.destination_folder)
+                
+            except Exception as e:
+                print(f'Error creating the folder: {e}')
 
 
     # move the selected emails to a different folder
