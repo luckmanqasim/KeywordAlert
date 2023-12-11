@@ -30,13 +30,13 @@ Before you begin, ensure you have met the following requirements:
 1. Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/email-filter-sms-alert.git
+git clone https://github.com/luckmanqasim/KeywordAlert.git
 ```
 
 2. Navigate to the project directory:
 
 ```bash
-cd email-filter-sms-alert
+cd KeywordAlert
 ```
 
 3. Create a virtual environment (recommended):
