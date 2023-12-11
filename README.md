@@ -1,4 +1,4 @@
-# Email Keyword Filter and SMS Notifier
+# KeywordAlert
 
 This project is a Python script that filters incoming emails for specific keywords and sends SMS notifications when a matching email is found. It can be a handy automation tool for staying informed about important emails while on the go.
 
